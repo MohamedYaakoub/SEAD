@@ -8,7 +8,7 @@ c = 3.17  # I used MAC #Ø: should be 2.934 I think.
 lh = 28.55 -0.08861*28.55 - 12.49 +1.038 - 0.25*c #length of aircraft - approx 3/4 tail - AX0 + AX0 to lemac - quarter chord
 lf = 0
 hf = 0
-b = 2621  # wing span probably!!
+b = 26.21  # wing span probably!!
 bf = 3.56  # fuselage diameter - I put width #Assumed circular
 VhV2 = 1  # T-tail
 lambda_quarter_chord = np.radians(15)  # main wing
@@ -73,7 +73,7 @@ def fun_Cm_ac():
     lambda_LE = 0  # not sure check slide 17
     Cm_ac_w = Cm_0 * (A * np.cos(lambda_LE) ** 2 / (A + 2 * np.cos(lambda_LE)))
     Cm_ac_fus = -1.8 * (1 - 2.5 * bf / lf) * (np.pi * bf * hf * lf / (4 * S * c)) * (
-                CL0 / fun_CL_aAh(0))  # compute CL_aAH for low speed
+            CL0 / fun_CL_aAh(0))  # compute CL_aAH for low speed
 
     def fun_Cm_ac_flaps():
         u1 = 0  # check slide 18
@@ -83,7 +83,7 @@ def fun_Cm_ac():
         delta_Cl_max = 0  # the airfoil lift coefficient increase due to flap extension at landing condition (estimated in the wing design module)
 
         Cm_025 = u2 * (- u1 * delta_Cl_max * cprime_c - (CL + delta_Cl_max * (1 - Swf_S)) * 1 / 8 * cprime_c * (
-                    cprime_c - 1)) + \
+                cprime_c - 1)) + \
                  0.7 * A / (1 + 2 / A) * u3 * delta_Cl_max * np.tan(lambda_quarter_chord)
         return Cm_025 - CL * (0.25 - fun_x_ac() / c)
 
@@ -114,4 +114,5 @@ def plot_controllability():
 
 if __name__ == '__main__':
     plot_stability()
+    plot_controllability()
     plt.show()
