@@ -4,18 +4,19 @@ from matplotlib import pyplot as plt
 # Global variables
 A = 8.89  # aspect ration Main wing
 A_h = 7.88
-c = 3.17  # I used MAC
-lh = 0  #
+c = 3.17  # I used MAC #Ø: should be 2.934 I think.
+lh = 28.55 -0.08861*28.55 - 12.49 +1.038 - 0.25*c #length of aircraft - approx 3/4 tail - AX0 + AX0 to lemac - quarter chord
 lf = 0
 hf = 0
 b = 2621  # wing span probably!!
-bf = 3.56  # fuselage diameter - I put width
+bf = 3.56  # fuselage diameter - I put width #Assumed circular
 VhV2 = 1  # T-tail
 lambda_quarter_chord = np.radians(15)  # main wing
 S = 77.3  # Main wing area
-S_net = 0  # net surface area of the wing (without the area inside in the fuselage)
+S_net = S-bf*c  # net surface area of the wing (without the area inside in the fuselage)
 S_h = 15.61
-Swf_S = 0  # ratio between flapped wing area and reference wing area (as defined in the wing design module). Consider only the TE flaps here!
+Swf_S = 0.78*0.25   # ratio between flapped wing area and reference wing area (as defined in the wing design module). Consider only the TE flaps here!
+                    # 'depth' of flaps are about 25% of the wing. Flap width/wing width = 0.78
 
 lambda_half_chord_mw = 0
 lambda_half_chord_h = 0
