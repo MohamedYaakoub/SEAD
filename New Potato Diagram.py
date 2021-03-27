@@ -25,13 +25,14 @@ x_tankaux = 13.781 #m
 
 #Weights
 W_OEW = 24820 #kg
-W_FrontHold_max = 1519.34 #kg
-W_BackHold_max = 1505.97 #kg
+W_FrontHold_max = 1520 #kg
+W_BackHold_max = 1506 #kg
 W_pax = 95 #kg
 
-#W_fuel_max = 9147.84 #kg
-W_fuel_max_wings = 16160*0.45359237 #kg
-W_fuel_max_center = 4160*0.45359237 #kg  #nominal tanks are 9217 kg which is almost fuel max
+
+#W_fuel_max_wings = 7366 #kg
+W_fuel_max_wings = 4839 #kg
+W_fuel_max_center = 1996 #kg  #nominal tanks are 9217 kg which is almost fuel max
 W_fuel_max_aux = 2064 *0.45359237 #kg
 #this gives tot of 10153 kg
 
@@ -95,12 +96,14 @@ for W_cargo in np.arange(0,W_BackHold_max + 0.01, 0.01):
 
 #Check for errors, get next initial values
 
+
 W_withcargo = W_front2[-1]  #now initial weight
 cg_withcargo = cg_back2[-1] #now initial cg
 
 #PAX LOADING - window-rule
 
 #Window rows 1st
+
 #A - from front to back
 cg_pax_windowA = [cg_withcargo]
 W_pax_windowA = [W_withcargo]
@@ -168,6 +171,7 @@ for x in np.linspace(x_lastseat, x_1stseat, n_row):
     cg_pax_middleB.append(cg)
     W_pax_middleB.append(W_total)
 
+
 W_withcargowindowandmiddle = W_pax_middleA[-1]  #now initial weight
 cg_withcargowindowandmiddle = cg_pax_middleA[-1] #now initial cg
 
@@ -179,7 +183,7 @@ W_pax_total = 0
 #for x in np.arange(x_1stseat, x_lastseat + deltacgseat, deltacgseat):
 rows = np.linspace(x_1stseat, x_lastseat , n_row)
 for x in rows[:-2]:  #only 15 rows
-   
+    
     W_pax_total = W_pax_total + W_pax * 2 #increase W of pax group by 2 pax
     x_pax = (x_1stseat + x)/2 #cg of pax group
 
@@ -229,7 +233,6 @@ for x in rows_inv[2:]:  #rest of rows
     cg_pax_aisleB.append(cg)
     W_pax_aisleB.append(W_total)
 
-
 W_afterpax = W_pax_aisleA[-1]  #now initial weight
 cg_afterpax = cg_pax_aisleA[-1] #now initial cg
 
@@ -248,32 +251,36 @@ for W in np.arange(0,W_fuel_max_wings +0.01, 0.01):
 W_afterwing = W_fuelwing[-1]  #now initial weight
 cg_afterwing = cg_fuelwing[-1] #now initial cg
 
-#2 - Center TANKS
-cg_fuelcenter = []
-W_fuelcenter = []
-
-for W in np.arange(0,W_fuel_max_center +0.01, 0.01):
-    W_total = W_afterwing + W
-    #print(W_total)
-    cg = ((cg_afterwing*W_afterwing) + (x_tankcenter*W))/(W_total)
-    cg_fuelcenter.append(cg)
-    W_fuelcenter.append(W_total)
-
-
-W_aftercenter = W_fuelcenter[-1]  #now initial weight
-cg_aftercenter = cg_fuelcenter[-1] #now initial cg
-
-#2 -Aux TANKS
-cg_fuelaux = []
-W_fuelaux = []
-
-for W in np.arange(0,W_fuel_max_aux +0.01, 0.01):
-    W_total = W_aftercenter  + W
-    #print(W_total)
-    cg = ((cg_aftercenter *W_aftercenter ) + (x_tankaux*W))/(W_total)
-    cg_fuelaux.append(cg)
-    W_fuelaux.append(W_total)
-
+# #2 - Center TANKS
+# cg_fuelcenter = []
+# W_fuelcenter = []
+#
+# for W in np.arange(0,W_fuel_max_center +0.01, 0.01):
+#     W_total = W_afterwing + W
+#     #print(W_total)
+#     cg = ((cg_afterwing*W_afterwing) + (x_tankcenter*W))/(W_total)
+#     cg_fuelcenter.append(cg)
+#     W_fuelcenter.append(W_total)
+#
+# print('cg after fuel is', cg_fuelcenter[-1])
+# print('W after fuel is', W_fuelcenter[-1] )
+#
+# W_aftercenter = W_fuelcenter[-1]  #now initial weight
+# cg_aftercenter = cg_fuelcenter[-1] #now initial cg
+#
+# #2 -Aux TANKS
+# cg_fuelaux = []
+# W_fuelaux = []
+#
+# for W in np.arange(0,W_fuel_max_aux +0.01, 0.01):
+#     W_total = W_aftercenter  + W
+#     #print(W_total)
+#     cg = ((cg_aftercenter *W_aftercenter ) + (x_tankaux*W))/(W_total)
+#     cg_fuelaux.append(cg)
+#     W_fuelaux.append(W_total)
+#
+# print('cg after aux  fuel is', cg_fuelaux[-1])
+# print('W after aux fuel is', W_fuelaux[-1] )
 
 
 # W_final = W_fuelwing[-1]  #now initial weight
@@ -282,7 +289,7 @@ for W in np.arange(0,W_fuel_max_aux +0.01, 0.01):
 
 #transformm into %mac
 values = [cg_front2, cg_back2, cg_back1,cg_front1,cg_pax_aisleA,cg_pax_aisleB ,
-          cg_pax_middleA,cg_pax_middleB, cg_pax_windowA,cg_pax_windowB, cg_fuelwing, cg_fuelcenter,cg_fuelaux]
+          cg_pax_middleA,cg_pax_middleB, cg_pax_windowA,cg_pax_windowB, cg_fuelwing,] # cg_fuelcenter,cg_fuelaux
 
 
 for A in values:
@@ -291,47 +298,39 @@ for A in values:
 
 
 max_cg = [max(cg_front2), max(cg_back2), max(cg_back1), max(cg_front1), max(cg_pax_aisleA), max(cg_pax_aisleB) ,
-          max(cg_pax_middleA), max(cg_pax_middleB), max(cg_pax_windowA),max(cg_pax_windowB), max(cg_fuelwing), max(cg_fuelcenter), max(cg_fuelaux)]
-most_aft_cg_margin = max(max_cg) + max(max_cg)*0.02  #2% margin
-
+          max(cg_pax_middleA), max(cg_pax_middleB), max(cg_pax_windowA),max(cg_pax_windowB), max(cg_fuelwing) ] #max(cg_fuelcenter), max(cg_fuelaux)
+#most_aft_cg_margin = max(max_cg) + max(max_cg)*0.02  #2% margin
+most_aft_cg_margin = max(max_cg) +0.02  #2%mac  margin
 min_cg = [min(cg_front2), min(cg_back2), min(cg_back1), min(cg_front1), min(cg_pax_aisleA), min(cg_pax_aisleB) ,
-          min(cg_pax_middleA), min(cg_pax_middleB), min(cg_pax_windowA),min(cg_pax_windowB), min(cg_fuelwing), min(cg_fuelcenter),  min( cg_fuelcenter)]
-most_foward_cg_margin = min(min_cg) - min(min_cg)*0.02  #2% margin
-
+          min(cg_pax_middleA), min(cg_pax_middleB), min(cg_pax_windowA),min(cg_pax_windowB), min(cg_fuelwing)] # min(cg_fuelcenter),  min( cg_fuelcenter)
+#most_foward_cg_margin = min(min_cg) - min(min_cg)*0.02  #2% margin
+most_foward_cg_margin = min(min_cg) -0.02  #2%mac margin
 
 #plots
-plt.axhline(W_fuelaux[-1] , color = 'lightgrey',linestyle = "dashdot")
+plt.axhline(W_fuelwing[-1] , color = 'lightgray',linestyle = "dashdot")
 
-plt.axvline(most_aft_cg_margin, color = 'darkgrey')
-plt.axvline(most_foward_cg_margin, color = 'darkgrey')
+plt.axvline(most_aft_cg_margin, color = 'lightgray')
+plt.axvline(most_foward_cg_margin, color = 'lightgray')
 
-plt.plot(cg_fuelwing, W_fuelwing, color = 'lightgrey')
-plt.plot(cg_fuelcenter, W_fuelcenter, color = 'lightgrey')
-plt.plot(cg_fuelaux, W_fuelaux, color = 'lightgrey')
+plt.plot(cg_fuelwing, W_fuelwing, color = 'lightgray')
+# plt.plot(cg_fuelcenter, W_fuelcenter, color = 'darkgrey',label = 'Fuel Center Tank')
+# plt.plot(cg_fuelaux, W_fuelaux, color = 'gainsboro',label = 'Fuel Center Tank')
 
-plt.axhline(W_afterpax, color = 'lightgrey',linestyle = "dashdot")
+plt.axhline(W_afterpax, color = 'lightgray',linestyle = "dashdot")
 
-plt.plot(cg_pax_aisleA, W_pax_aisleA, color = 'lightgrey')
-plt.plot(cg_pax_aisleB, W_pax_aisleB, color = 'lightgrey', linestyle = "dashed")
-plt.plot(cg_pax_middleA, W_pax_middleA, color = 'lightgrey')
-plt.plot(cg_pax_middleB, W_pax_middleB,color = 'lightgrey', linestyle = "dashed")
-plt.plot(cg_pax_windowA, W_pax_windowA, color = 'lightgrey')
-plt.plot(cg_pax_windowB, W_pax_windowB, color = 'lightgrey', linestyle = "dashed")
+plt.plot(cg_pax_aisleA, W_pax_aisleA, color = 'lightgray')
+plt.plot(cg_pax_aisleB, W_pax_aisleB, color = 'lightgray', linestyle = "dashed")
+plt.plot(cg_pax_middleA, W_pax_middleA, color = 'lightgray')
+plt.plot(cg_pax_middleB, W_pax_middleB,color = 'lightgray', linestyle = "dashed")
+plt.plot(cg_pax_windowA, W_pax_windowA, color = 'lightgray')
+plt.plot(cg_pax_windowB, W_pax_windowB, color = 'lightgray', linestyle = "dashed")
 
-plt.plot(cg_back1, W_back1, color = 'lightgrey')
-plt.plot(cg_front2, W_front2, color = 'lightgrey', linestyle = "dashed")
-plt.plot(cg_front1, W_front1,color = 'lightgrey')
-plt.plot(cg_back2, W_back2, color = 'lightgrey',  linestyle = "dashed")
+plt.plot(cg_back1, W_back1, color = 'lightgray')
+plt.plot(cg_front2, W_front2, color = 'lightgray', linestyle = "dashed")
+plt.plot(cg_front1, W_front1,color = 'lightgray', label = 'Front hold 1st')
+plt.plot(cg_back2, W_back2, color = 'lightgray',  linestyle = "dashed")
 
-plt.axhline(W_OEW, color = 'lightgrey',linestyle = "dashdot")
-
-
-#plt.xlabel('c.g. (% mac)', fontsize = 15)
-#plt.ylabel("Total Weight (kg)", fontsize = 15)
-#plt.title('Loading diagram', fontsize = 15)
-#plt.legend(loc= 'best', fontsize = 12)
-#plt.show()
-
+plt.axhline(W_OEW, color = 'lightgray',linestyle = "dashdot")
 
 
 
@@ -366,7 +365,7 @@ x_lemac = 11.45 #m
 mac = 3.17 #m
 
 x_OEW_lemac = 0.25 #%Lemac   #it can be between 0.25 and 0.3
-x_OEW_ac = x_OEW_lemac*mac + x_lemac - 0.6  #Moved 60 cm forward
+x_OEW_ac = x_OEW_lemac*mac + x_lemac - 0.6 #Moved 60 cm forward.
 
 x_FrontHold_ac = 7.99 #m
 x_BackHold_ac = 16.66 #m
@@ -386,9 +385,10 @@ W_FrontHold_max = 3381.5 #kg    #Increased with 75% of 'spare' weight
 W_BackHold_max = 2126.5 #kg     #Increased with 25% of 'spare' weight
 W_pax = 95 #kg
 
-#W_fuel_max = 9147.84 #kg
-W_fuel_max_wings = 16160*0.45359237 #kg
-W_fuel_max_center = 4160*0.45359237 #kg  #nominal tanks are 9217 kg which is almost fuel max
+
+#W_fuel_max_wings = 7366 #kg
+W_fuel_max_wings = 4839 #kg
+W_fuel_max_center = 1996 #kg  #nominal tanks are 9217 kg which is almost fuel max
 W_fuel_max_aux = 2064 *0.45359237 #kg
 #this gives tot of 10153 kg
 
@@ -626,36 +626,36 @@ print('W after wing fuel is', W_fuelwing[-1] )
 W_afterwing = W_fuelwing[-1]  #now initial weight
 cg_afterwing = cg_fuelwing[-1] #now initial cg
 
-#2 - Center TANKS
-cg_fuelcenter = []
-W_fuelcenter = []
-
-for W in np.arange(0,W_fuel_max_center +0.01, 0.01):
-    W_total = W_afterwing + W
-    #print(W_total)
-    cg = ((cg_afterwing*W_afterwing) + (x_tankcenter*W))/(W_total)
-    cg_fuelcenter.append(cg)
-    W_fuelcenter.append(W_total)
-
-print('cg after fuel is', cg_fuelcenter[-1])
-print('W after fuel is', W_fuelcenter[-1] )
-
-W_aftercenter = W_fuelcenter[-1]  #now initial weight
-cg_aftercenter = cg_fuelcenter[-1] #now initial cg
-
-#2 -Aux TANKS
-cg_fuelaux = []
-W_fuelaux = []
-
-for W in np.arange(0,W_fuel_max_aux +0.01, 0.01):
-    W_total = W_aftercenter  + W
-    #print(W_total)
-    cg = ((cg_aftercenter *W_aftercenter ) + (x_tankaux*W))/(W_total)
-    cg_fuelaux.append(cg)
-    W_fuelaux.append(W_total)
-
-print('cg after aux  fuel is', cg_fuelaux[-1])
-print('W after aux fuel is', W_fuelaux[-1] )
+# #2 - Center TANKS
+# cg_fuelcenter = []
+# W_fuelcenter = []
+#
+# for W in np.arange(0,W_fuel_max_center +0.01, 0.01):
+#     W_total = W_afterwing + W
+#     #print(W_total)
+#     cg = ((cg_afterwing*W_afterwing) + (x_tankcenter*W))/(W_total)
+#     cg_fuelcenter.append(cg)
+#     W_fuelcenter.append(W_total)
+#
+# print('cg after fuel is', cg_fuelcenter[-1])
+# print('W after fuel is', W_fuelcenter[-1] )
+#
+# W_aftercenter = W_fuelcenter[-1]  #now initial weight
+# cg_aftercenter = cg_fuelcenter[-1] #now initial cg
+#
+# #2 -Aux TANKS
+# cg_fuelaux = []
+# W_fuelaux = []
+#
+# for W in np.arange(0,W_fuel_max_aux +0.01, 0.01):
+#     W_total = W_aftercenter  + W
+#     #print(W_total)
+#     cg = ((cg_aftercenter *W_aftercenter ) + (x_tankaux*W))/(W_total)
+#     cg_fuelaux.append(cg)
+#     W_fuelaux.append(W_total)
+#
+# print('cg after aux  fuel is', cg_fuelaux[-1])
+# print('W after aux fuel is', W_fuelaux[-1] )
 
 
 # W_final = W_fuelwing[-1]  #now initial weight
@@ -664,7 +664,7 @@ print('W after aux fuel is', W_fuelaux[-1] )
 
 #transformm into %mac
 values = [cg_front2, cg_back2, cg_back1,cg_front1,cg_pax_aisleA,cg_pax_aisleB ,
-          cg_pax_middleA,cg_pax_middleB, cg_pax_windowA,cg_pax_windowB, cg_fuelwing, cg_fuelcenter,cg_fuelaux]
+          cg_pax_middleA,cg_pax_middleB, cg_pax_windowA,cg_pax_windowB, cg_fuelwing,] # cg_fuelcenter,cg_fuelaux
 
 
 for A in values:
@@ -673,26 +673,27 @@ for A in values:
 
 
 max_cg = [max(cg_front2), max(cg_back2), max(cg_back1), max(cg_front1), max(cg_pax_aisleA), max(cg_pax_aisleB) ,
-          max(cg_pax_middleA), max(cg_pax_middleB), max(cg_pax_windowA),max(cg_pax_windowB), max(cg_fuelwing), max(cg_fuelcenter), max(cg_fuelaux)]
-most_aft_cg_margin = max(max_cg) + max(max_cg)*0.02  #2% margin
-
+          max(cg_pax_middleA), max(cg_pax_middleB), max(cg_pax_windowA),max(cg_pax_windowB), max(cg_fuelwing) ] #max(cg_fuelcenter), max(cg_fuelaux)
+#most_aft_cg_margin = max(max_cg) + max(max_cg)*0.02  #2% margin
+most_aft_cg_margin = max(max_cg) +0.02  #2%mac  margin
 min_cg = [min(cg_front2), min(cg_back2), min(cg_back1), min(cg_front1), min(cg_pax_aisleA), min(cg_pax_aisleB) ,
-          min(cg_pax_middleA), min(cg_pax_middleB), min(cg_pax_windowA),min(cg_pax_windowB), min(cg_fuelwing), min(cg_fuelcenter),  min( cg_fuelcenter)]
-most_foward_cg_margin = min(min_cg) - min(min_cg)*0.02  #2% margin
+          min(cg_pax_middleA), min(cg_pax_middleB), min(cg_pax_windowA),min(cg_pax_windowB), min(cg_fuelwing)] # min(cg_fuelcenter),  min( cg_fuelcenter)
+#most_foward_cg_margin = min(min_cg) - min(min_cg)*0.02  #2% margin
+most_foward_cg_margin = min(min_cg) -0.02  #2%mac margin
 
 print()
 print('CG most foward is', min(min_cg), '%,  with margin: ', most_foward_cg_margin , '%' )
 print('CG most aft is', max(max_cg) ,'%,  with margin: ', most_aft_cg_margin , '%')
 
 #plots
-plt.axhline(W_fuelaux[-1] , color = 'gold',linestyle = "dashdot", label = 'MTOW')
+plt.axhline(W_fuelwing[-1] , color = 'gold',linestyle = "dashdot", label = 'MTOW')
 
 plt.axvline(most_aft_cg_margin, color = 'tomato', label = 'most_aft')
 plt.axvline(most_foward_cg_margin, color = 'tomato', label = 'most_foward')
 
 plt.plot(cg_fuelwing, W_fuelwing, color = 'grey',label = 'Fuel Wing Tanks')
-plt.plot(cg_fuelcenter, W_fuelcenter, color = 'darkgrey',label = 'Fuel Center Tank')
-plt.plot(cg_fuelaux, W_fuelaux, color = 'gainsboro',label = 'Fuel Center Tank')
+# plt.plot(cg_fuelcenter, W_fuelcenter, color = 'darkgrey',label = 'Fuel Center Tank')
+# plt.plot(cg_fuelaux, W_fuelaux, color = 'gainsboro',label = 'Fuel Center Tank')
 
 plt.axhline(W_afterpax, color = 'orange',linestyle = "dashdot", label = 'MZFW')
 
