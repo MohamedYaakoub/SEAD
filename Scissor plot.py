@@ -8,7 +8,7 @@ taper_mw = 0.356
 taper_h = 0.410
 c = 3.17  # I used MAC #Ø: should be 2.934 I think.
 lh = 28.55 - 0.08861 * 28.55 - 12.49 + 1.038 - 0.25 * c  # length of aircraft - approx 3/4 tail - AX0 + AX0 to lemac - quarter chord
-lf = 0
+lf = 26.5
 lf_n = lh  ###### CHANGEEE###########
 
 b = 26.21  # wing span probably!!
@@ -40,16 +40,15 @@ eta_h = 0.95
 mach_mw = 0.730  # at cruise alt
 mach_h = mach_mw
 
-CL = 0  # wing lift coefficient at landing (all flaps deployed)
+CL = 3.43  # wing lift coefficient at landing (all flaps deployed) I used at L/D
 CL_h = - 0.35 * A_h ** (1 / 3)
-CL0 = 0  # CL0 is the lift coefficient of the flapped wing at zero angle of attack
+CL0 = 1  # CL0 is the lift coefficient of the flapped wing at zero angle of attack ##CHANGE!!!
 
 
 def fun_CL_a(mach, wing_area, eta, lambda_half_chord):  # will be used for both the main wing and the horizontal tail
     beta = np.sqrt(1 - mach ** 2)
     result = (2 * np.pi * wing_area) / (
             2 + np.sqrt(4 + (wing_area * beta / eta) ** 2 * (1 + (np.tan(lambda_half_chord)) ** 2 / beta ** 2)))
-    print(result)
     return result
 
 
@@ -67,7 +66,7 @@ CL_aAh = fun_CL_aAh(mach_mw, S, eta_mw, lambda_half_chord_mw)
 
 
 def wing_downwash():
-    weird_distance = lh / 3  # check slide 42
+    weird_distance = lh / 3  # check slide 42  ##CHANGE!!!
 
     r = 2 * lh / b
     mtv = 2 * weird_distance / b
@@ -81,17 +80,17 @@ def wing_downwash():
 
 
 def fun_Cm_ac():
-    Cm_0 = 0
+    Cm_0 = 1 ##CHANGE!!!
     Cm_ac_w = Cm_0 * (A * np.cos(lambda_LE_mw) ** 2 / (A + 2 * np.cos(lambda_LE_mw)))
     Cm_ac_fus = -1.8 * (1 - 2.5 * bf / lf) * (np.pi * bf * hf * lf / (4 * S * c)) * (
-            CL0 / fun_CL_aAh(0))  # compute CL_aAH for low speed
+            CL0 / CL_aAh)  # compute CL_aAH for low speed  ##CHANGE!!!
 
     def fun_Cm_ac_flaps():
-        u1 = 0  # check slide 18
+        u1 = 0.2  # check slide 18 ##CHANGE!!!
         u2 = 0.8  # recheck slide 19
         u3 = 0.04  # recheck slide 19
-        cprime_c = 0
-        delta_Cl_max = 0  # the airfoil lift coefficient increase due to flap extension at landing condition (estimated in the wing design module)
+        cprime_c = 1.2    ##CHANGE!!!
+        delta_Cl_max = 0.2  # the airfoil lift coefficient increase due to flap extension at landing condition (estimated in the wing design module)  ##CHANGE!!!
 
         Cm_025 = u2 * (- u1 * delta_Cl_max * cprime_c - (CL + delta_Cl_max * (1 - Swf_S)) * 1 / 8 * cprime_c * (
                 cprime_c - 1)) + \
@@ -120,26 +119,31 @@ def plot_stability():
 
     m = 1 / (CL_a_h / CL_aAh * (1 - de_da) * lh / c * VhV2)  # slope
     q = -(x_ac - 0.05) * m
-    print(q)
     x_plot = np.linspace(0, 1, 100)
     y_plot = m * x_plot + q
-    plt.plot(x_plot, y_plot, label='stability')
+    plt.plot(x_plot, y_plot, label='Stability')
 
 
 def plot_controllability():
     Cm_ac = fun_Cm_ac()
-    CL_AH = 0  # CLA-h can be approximated with the wing lift coefficient (in this case at landing condition), ignoring the minor contribution of the fuselage.
+    CL_AH = CL  # CLA-h can be approximated with the wing lift coefficient (in this case at landing condition), ignoring the minor contribution of the fuselage.
     m = 1 / (CL_h / CL_AH * lh / c * VhV2)
     q = (Cm_ac / CL_AH - x_ac) / (CL_h / CL_AH * lh / c * VhV2)
+    x_plot = np.linspace(0, 1, 100)
+    y_plot = m * x_plot + q
+    plt.plot(x_plot, y_plot, label='Controllability')
 
 
 if __name__ == '__main__':
     plot_stability()
+    plot_controllability()
     # plot_controllability()
     plt.ylabel(r'$S_h$/S')
     plt.xlabel(r'$X_{cg}$ / MAC')
     plt.axhline(y = 0, color='black')
     plt.axvline(x= 0, color='black')
     plt.legend()
+    plt.ylim(0)
+    plt.xlim(0)
     plt.show()
 
