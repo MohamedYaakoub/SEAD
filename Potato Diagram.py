@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 ######### INPUT PARAMETERS ###########
 #CGs of parts
-x_lemac = 11.45 #m
-mac = 3.17 #m
+x_lemac = 11.64 #m
+mac = 3.00 #m
 
 x_OEW_lemac = 0.25 #%Lemac   #it can be between 0.25 and 0.3
 x_OEW_ac = x_OEW_lemac*mac + x_lemac
@@ -13,10 +13,11 @@ x_OEW_ac = x_OEW_lemac*mac + x_lemac
 x_FrontHold_ac = 7.99 #m
 x_BackHold_ac = 16.66 #m
 
-x_1stseat = 7.138 #m  #STILL FAKE
+x_1stseat = 6.1 #m  #STILL FAKE
 deltacgseat = 31*0.0254 #m  (inches to m)
 n_row = 17     #2 last rows are missing 2 aisle people
 x_lastseat = x_1stseat + (n_row*deltacgseat) #m
+print(x_lastseat)
 
 x_tankwing = 12.494 #m
 x_tankcenter = 11.504 #m
