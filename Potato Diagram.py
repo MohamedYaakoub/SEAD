@@ -13,7 +13,7 @@ x_OEW_ac = x_OEW_lemac*mac + x_lemac
 x_FrontHold_ac = 7.99 #m
 x_BackHold_ac = 16.66 #m
 
-x_1stseat = 6.1 #m  #STILL FAKE
+x_1stseat = 6.1 #m
 deltacgseat = 31*0.0254 #m  (inches to m)
 n_row = 17     #2 last rows are missing 2 aisle people
 x_lastseat = x_1stseat + (n_row*deltacgseat) #m
