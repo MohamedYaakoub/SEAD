@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # Global variables
-A = 8.89 * 1.15  # aspect ration Main wing
+A = 8.89   # aspect ration Main wing
 A_h = 7.88
 taper_mw = 0.356
 taper_h = 0.410
