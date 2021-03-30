@@ -13,10 +13,13 @@ lf = 26.5
 b = 26.21  # wing span probably!!
 bf = 3.56  # fuselage diameter - I put width #Assumed circular
 bn = 1.4
-ln = 2.6    #I put length of the engine
+# ln = 2.6    #I put length of the engine
+ln1 = 4.34
+ln2 = 3.426
 hf = bf
 
-lf_n = 28.55 - lh - ln
+# lf_n = 28.55 - lh - ln
+lf_n = 10.05
 
 VhV2 = 1  # T-tail
 lambda_quarter_chord_mw = np.radians(15)  # main wing
@@ -71,7 +74,7 @@ def fun_CL_aAh(mach, wing_area, eta, lambda_half_chord):
 
 def wing_downwash():
     CL_aAh = fun_CL_aAh(mach_cruise, S, eta_mw, lambda_half_chord_mw)
-    weird_distance = 4.2  # check slide 42  ##CHANGE!!!
+    weird_distance = 4.2  # check slide 42
 
     r = 2 * lh / b
     mtv = 2 * weird_distance / b
@@ -95,7 +98,7 @@ def fun_Cm_ac():
         u1 = 0.20125  # check slide 18
         u2 = 0.8  # recheck slide 19
         u3 = 0.04  # recheck slide 19
-        cprime_c = 1.233    ##CHANGE!!!
+        cprime_c = 1.233
         delta_Cl_max = 1.6  # the airfoil lift coefficient increase due to flap extension at landing condition (estimated in the wing design module)  ##CHANGE!!!
 
         Cm_025 = u2 * (- u1 * delta_Cl_max * cprime_c - (CL + delta_Cl_max * (1 - Swf_S)) * 1 / 8 * cprime_c * (
@@ -115,8 +118,9 @@ def fun_x_ac(mach):
         wing = 0.27
     fus_1 = -1.8 / CL_aAh * (bf * hf * lf_n) / (S * c)
     fus_2 = 0.273 / (1 + taper_mw) * (bf * S / b * (b - bf)) / (c ** 2 * (b + 2.15 * bf)) * np.tan(lambda_quarter_chord_mw)
-    nacelles = -4 * (bn ** 2 * ln) / (S * c * CL_aAh) * 4
-    return wing + fus_1 + fus_2 + nacelles
+    nacelles_frwd = -2 * (bn ** 2 * ln1) / (S * c * CL_aAh) * 4
+    nacelles_back = -2 * (bn ** 2 * ln1) / (S * c * CL_aAh) * 4
+    return wing + fus_1 + fus_2 + nacelles_frwd + nacelles_back
 
 
 
