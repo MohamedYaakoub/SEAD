@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 x_lemac = 11.64 #m
 mac = 3.00 #m
 
-x_OEW_lemac = 0.25 #%Lemac   #it can be between 0.25 and 0.3
+x_OEW_lemac = 0.3 #%Lemac   #it can be between 0.25 and 0.3
 x_OEW_ac = x_OEW_lemac*mac + x_lemac
 
 x_FrontHold_ac = 7.99 #m
@@ -364,7 +364,7 @@ plt.axhline(W_OEW, color = 'lightgray',linestyle = "dashdot")
 x_lemac = 11.64 #m
 mac = 3.00 #m
 
-x_OEW_lemac = 0.25 #%Lemac   #it can be between 0.25 and 0.3
+x_OEW_lemac = 0.3 #%Lemac   #it can be between 0.25 and 0.3
 x_OEW_ac = x_OEW_lemac*mac + x_lemac - 0.6 #Moved 60 cm forward.
 
 x_FrontHold_ac = 7.99 #m
